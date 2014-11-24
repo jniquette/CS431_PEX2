@@ -23,6 +23,15 @@ procedure md5 is
    d0 : U32 := 16#10325476#;   --D
 
 
+   function Get_String return String is -- This function from rosettacode.org
+      Line : String (1 .. 1_000);
+      Last : Natural;
+   begin
+      Get_Line (Line, Last);
+      return Line (1 .. Last);
+   end Get_String;
+
+
 
 begin
 
@@ -50,7 +59,7 @@ begin
       16#655b59c3#, 16#8f0ccc92#, 16#ffeff47d#, 16#85845dd1#,
       16#6fa87e4f#, 16#fe2ce6e0#, 16#a3014314#, 16#4e0811a1#,
       16#f7537e82#, 16#bd3af235#, 16#2ad7d2bb#, 16#eb86d391#);
-     --Shift_Amounts(63) := 69;
+   --Shift_Amounts(63) := 69;
 
 
    --  Test := Integer'Value(Shift_Amounts'First);
@@ -64,17 +73,12 @@ begin
    end loop;
 
 
-
+   Put(Get_String);
 
 end md5;
 
 
 
---  --Initialize variables:
---  var int a0 := 16#67452301   --A
---  var int b0 := 16#efcdab89   --B
---  var int c0 := 16#98badcfe   --C
---  var int d0 := 16#10325476   --D
 --
 --  --Pre-processing: adding a single 1 bit
 --  --append "1" bit to message
