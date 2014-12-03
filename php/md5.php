@@ -44,7 +44,7 @@ $d0 = hexdec("10325476");   //D
 // $handle = fopen ("php://stdin","r");
 // $input = trim(fgets($handle));
 //Skip this for now, just use the string
-$input = "The quick brown fox jumps over the lazy dog";
+$input = "abcdefghijklmnopqrstuvwxyz";	//"The quick brown fox jumps over the lazy dog";
 
 echo "Inputted: ".$input."\n";
 echo "\t".bin2hex($input)."\n";	//The bin2hex() function converts a string of ASCII characters to hexadecimal values.
@@ -99,21 +99,35 @@ printHexArray($byte_array);
 
 
 //-------------------Left Off Here---------------------
-// for each 512-bit chunk of message
-    // break chunk into sixteen 32-bit words M[j], 0 ≤ j ≤ 15
+// for each 512-bit chunk of message (64 bytes)
+$chunk_min_byte = 0;
+$chunk_max_byte = 63;
+
+    // break chunk into sixteen 32-bit (4 byte)words M[j], 0 ≤ j ≤ 15
 // //Initialize hash value for this chunk:
     // var int A := a0
     // var int B := b0
     // var int C := c0
     // var int D := d0
+$A = $a0;
+$B = $b0;
+$C = $c0;
+$D = $d0;
+
+
 // //Main loop:
     // for i from 0 to 63
+	for($i = 0; $i <= 63; $i++){
         // if 0 ≤ i ≤ 15 then
+		if($i <= 15){
             // F := (B and C) or ((not B) and D)
             // g := i
+	}
         // else if 16 ≤ i ≤ 31
+	else if($i <= 31){
             // F := (D and B) or ((not D) and C)
             // g := (5×i + 1) mod 16
+	}
         // else if 32 ≤ i ≤ 47
             // F := B xor C xor D
             // g := (3×i + 5) mod 16
@@ -125,6 +139,7 @@ printHexArray($byte_array);
         // C := B
         // B := B + leftrotate((A + F + K[i] + M[g]), s[i])
         // A := dTemp
+	}
     // end for
 // //Add this chunk's hash to result so far:
     // a0 := a0 + A
