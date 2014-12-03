@@ -103,50 +103,55 @@ printHexArray($byte_array);
 $chunk_min_byte = 0;
 $chunk_max_byte = 63;
 
+while($chunk_max_byte + 1 < sizeof($byte_array){
+
     // break chunk into sixteen 32-bit (4 byte)words M[j], 0 ≤ j ≤ 15
 // //Initialize hash value for this chunk:
-    // var int A := a0
-    // var int B := b0
-    // var int C := c0
-    // var int D := d0
-$A = $a0;
-$B = $b0;
-$C = $c0;
-$D = $d0;
+$A = $a0;    // var int A := a0
+$B = $b0;    // var int B := b0
+$C = $c0;    // var int C := c0
+$D = $d0;    // var int D := d0
 
 
 // //Main loop:
-    // for i from 0 to 63
-	for($i = 0; $i <= 63; $i++){
-        // if 0 ≤ i ≤ 15 then
-		if($i <= 15){
-            // F := (B and C) or ((not B) and D)
-            // g := i
-	}
-        // else if 16 ≤ i ≤ 31
-	else if($i <= 31){
-            // F := (D and B) or ((not D) and C)
-            // g := (5×i + 1) mod 16
-	}
-        // else if 32 ≤ i ≤ 47
-            // F := B xor C xor D
-            // g := (3×i + 5) mod 16
-        // else if 48 ≤ i ≤ 63
-            // F := C xor (B or (not D))
-            // g := (7×i) mod 16
-        // dTemp := D
-        // D := C
-        // C := B
-        // B := B + leftrotate((A + F + K[i] + M[g]), s[i])
-        // A := dTemp
-	}
-    // end for
+    
+	for($i = 0; $i <= 63; $i++){			// for i from 0 to 63
+		if($i <= 15){				// if 0 ≤ i ≤ 15 then
+           	 	$F = ($B & $C) | (~$B & $D);	// F := (B and C) or ((not B) and D)
+           	 	$g = $i;			// g := i
+		}
+		else if($i <= 31){			// else if 16 ≤ i ≤ 31
+		    	$F = ($D & $B) | (~$D & $C);	// F := (D and B) or ((not D) and C)
+		    	$g = ((5 * $i) + 1) % 16;	// g := (5×i + 1) mod 16
+		}
+		// else if 32 ≤ i ≤ 47
+		else if($i <= 47){
+		    // F := B xor C xor D
+		    // g := (3×i + 5) mod 16
+		}
+		// else if 48 ≤ i ≤ 63
+		else{        
+		    // F := C xor (B or (not D))
+		    // g := (7×i) mod 16
+		}
+		// dTemp := D
+		// D := C
+		// C := B
+		// B := B + leftrotate((A + F + K[i] + M[g]), s[i])
+		// A := dTemp
+	}// end for
+    
 // //Add this chunk's hash to result so far:
     // a0 := a0 + A
     // b0 := b0 + B
     // c0 := c0 + C
     // d0 := d0 + D
-// end for
+
+//Increment start and end byte numbers
+$chunk_min_byte += 64;
+$chunk_max_byte += 64;
+
+}// end for (actually a while loop)
 
 // var char digest[16] := a0 append b0 append c0 append d0 //(Output is in little-endian)
 
