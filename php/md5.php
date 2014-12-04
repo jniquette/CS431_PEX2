@@ -105,62 +105,78 @@ $chunk_max_byte = 63;
 
 while($chunk_max_byte + 1 < sizeof($byte_array){
 
-    // break chunk into sixteen 32-bit (4 byte)words M[j], 0 ≤ j ≤ 15
-// //Initialize hash value for this chunk:
-$A = $a0;    // var int A := a0
-$B = $b0;    // var int B := b0
-$C = $c0;    // var int C := c0
-$D = $d0;    // var int D := d0
+	// break chunk into sixteen 32-bit (4 byte)words M[j], 0 ≤ j ≤ 15
+	$M = array();	//Reinitialize to a null array since PHP doesn't always scope well.
+	echo "$M: ";
+	for($j = 0; $j <= 15; $j++){
+		$M[] = ($byte_array[		//-----------------------------------------------------FINISH THIS
+	}
+	var_dump($M);
 
 
-// //Main loop:
-    
-	for($i = 0; $i <= 63; $i++){			// for i from 0 to 63
-		if($i <= 15){				// if 0 ≤ i ≤ 15 then
-           	 	$F = ($B & $C) | (~$B & $D);	// F := (B and C) or ((not B) and D)
-           	 	$g = $i;			// g := i
-		}
-		else if($i <= 31){			// else if 16 ≤ i ≤ 31
-		    	$F = ($D & $B) | (~$D & $C);	// F := (D and B) or ((not D) and C)
-		    	$g = ((5 * $i) + 1) % 16;	// g := (5×i + 1) mod 16
-		}
-		// else if 32 ≤ i ≤ 47
-		else if($i <= 47){
-		    // F := B xor C xor D
-		    // g := (3×i + 5) mod 16
-		}
-		// else if 48 ≤ i ≤ 63
-		else{        
-		    // F := C xor (B or (not D))
-		    // g := (7×i) mod 16
-		}
-		// dTemp := D
-		// D := C
-		// C := B
-		// B := B + leftrotate((A + F + K[i] + M[g]), s[i])
-		// A := dTemp
-	}// end for
-    
-// //Add this chunk's hash to result so far:
-    // a0 := a0 + A
-    // b0 := b0 + B
-    // c0 := c0 + C
-    // d0 := d0 + D
+	// //Initialize hash value for this chunk:
+	$A = $a0;    // var int A := a0
+	$B = $b0;    // var int B := b0
+	$C = $c0;    // var int C := c0
+	$D = $d0;    // var int D := d0
 
-//Increment start and end byte numbers
-$chunk_min_byte += 64;
-$chunk_max_byte += 64;
+
+	// //Main loop:
+	    
+		for($i = 0; $i <= 63; $i++){			// for i from 0 to 63
+			if($i <= 15){				// if 0 ≤ i ≤ 15 then
+		   	 	$F = ($B & $C) | (~$B & $D);	// F := (B and C) or ((not B) and D)
+		   	 	$g = $i;			// g := i
+			}
+			else if($i <= 31){			// else if 16 ≤ i ≤ 31
+			    	$F = ($D & $B) | (~$D & $C);	// F := (D and B) or ((not D) and C)
+			    	$g = ((5 * $i) + 1) % 16;	// g := (5×i + 1) mod 16
+			}
+		
+			else if($i <= 47){			// else if 32 ≤ i ≤ 47
+			    	$F = ($B ^ $C) ^ $D;		// F := B xor C xor D
+			    	$g = (3*$i + 5) % 16;		// g := (3×i + 5) mod 16
+			}
+			else{ 					// else if 48 ≤ i ≤ 63
+			    	$F = $C ^ ($B | ~$D);		// F := C xor (B or (not D))
+			    	$g = (7 * $i) % 16;		// g := (7×i) mod 16
+			}
+		
+			$dTemp = $D;				// dTemp := D
+			$D = $C;				// D := C
+			$C = $B;				// C := B
+			$B = $B + leftRotate(($A + $F + $K[$i]+// B := B + leftrotate((A + F + K[i] + M[g]), s[i])		//-----------------------------------------------------FINISH THIS
+			// A := dTemp
+		}// end for
+	    
+	// //Add this chunk's hash to result so far:
+	    // a0 := a0 + A		//-----------------------------------------------------FINISH THIS
+	    // b0 := b0 + B
+	    // c0 := c0 + C
+	    // d0 := d0 + D
+
+	//Increment start and end byte numbers
+	$chunk_min_byte += 64;
+	$chunk_max_byte += 64;
 
 }// end for (actually a while loop)
 
 // var char digest[16] := a0 append b0 append c0 append d0 //(Output is in little-endian)
+echo "Final Result: ".$a0.$b0.$c0.$d0;
+
 
 // //leftrotate function definition
 // leftrotate (x, c)
     // return (x << c) binary or (x >> (32-c));
+function leftrotate($x, $c){
+	return substr($x, $c).substr($x, 0, $c);
+}
 
 
-
+/*
+ * printHexArray - Function to echo a byte array in hexidecimal notation 
+ * 			with each four bytes seperated by a space.
+ */
 function printHexArray($byteArray){
 	$i = 0;
 	foreach($byteArray as $byte){
@@ -174,6 +190,6 @@ function printHexArray($byteArray){
 }
 
 
-echo "\n";
+echo "\n";	//Start the command line prompt on a new line.
 
 ?>
