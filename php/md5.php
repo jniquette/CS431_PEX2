@@ -41,10 +41,11 @@ $d0 = hexdec("10325476");   //D
 
 //Get input from user
 //Source: http://stackoverflow.com/questions/6543841/php-cli-getting-input-from-user-and-then-dumping-into-variable-possible
-// $handle = fopen ("php://stdin","r");
-// $input = trim(fgets($handle));
+echo "Please enter a string\n";
+$handle = fopen ("php://stdin","r");
+$input = trim(fgets($handle));
 //Skip this for now, just use the string
-$input = "The quick brown fox jumps over the lazy dog";
+//$input = "The quick brown fox jumps over the lazy dog";
 //$input = "abcdefghijklmnopqrstuvwxyz";
 
 echo "Inputted: ".$input."\n";
@@ -85,10 +86,12 @@ echo "\n\n";
 
 
 
-//-------------------Left Off Here---------------------
+
 // for each 512-bit chunk of message (64 bytes)
 $chunk_min_byte = 0;
 $chunk_max_byte = 63;
+
+
 
 
 while($chunk_max_byte < sizeof($byte_array)){
@@ -115,9 +118,10 @@ while($chunk_max_byte < sizeof($byte_array)){
 
 
 	// //Main loop:
+	echo "\n[Before Loop\n\ta: ".dechex($a0)."\tb: ".dechex($b0)."\tc: ".dechex($c0)."\td: ".dechex($d0)."\n";
 	echo "\nEntering For Loop\n";
-	for($i = 0; $i <= 0; $i++){			//------------------------------------------Change this back
-	//for($i = 0; $i <= 63; $i++){			// for i from 0 to 63
+	//for($i = 0; $i <= 0; $i++){			//-----Debugging Only---------------------------Change this back
+	for($i = 0; $i <= 63; $i++){			// for i from 0 to 63
 		echo "[i = $i] ";
 		if($i <= 15){				// if 0 ≤ i ≤ 15 then
 	   	 	$F = ($B & $C) | (~$B & $D);	// F := (B and C) or ((not B) and D)
@@ -150,8 +154,10 @@ while($chunk_max_byte < sizeof($byte_array)){
 	$b0 += $B;    // b0 := b0 + B
 	$c0 += $C;    // c0 := c0 + C
 	$d0 += $D;    // d0 := d0 + D
-
-	echo "a: ".dechex($a0)."\tb: ".dechex($b0)."\tc: ".dechex($c0)."\td: ".dechex($d0)."\n";
+	
+	echo "F: $F\tg: $g\n";
+	echo "a0: ".dechex($a0)."\tb0: ".dechex($b0)."\tc0: ".dechex($c0)."\td0: ".dechex($d0)."\n";
+	echo "A: ".dechex($A)."\tB: ".dechex($B)."\tC: ".dechex($C)."\tD: ".dechex($D)."\n";
 
 	//Increment start and end byte numbers
 	$chunk_min_byte += 64;
